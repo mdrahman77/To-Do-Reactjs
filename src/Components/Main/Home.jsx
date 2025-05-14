@@ -15,8 +15,9 @@ import "react-clock/dist/Clock.css";
 import { MdDateRange } from "react-icons/md";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import { use } from "react";
+import dayjs from "dayjs";
 
-function Main() {
+function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [todos,setTodos] =useState("")
   const [name, setName] =useState("");
@@ -25,8 +26,8 @@ function Main() {
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
-    e.preventDefult();
-    console.log(" Submit clicked");
+    e.preventDefault();
+    console.log("Submit clicked");
     if (name && time) {
       setError("");
       setTodos([
@@ -34,18 +35,19 @@ function Main() {
         {
           id: Math.ceil(Math.random()*1000),
           names:name,
-          times:moment(time,"HH:mm:ss").format("hh:mm a"),
-          dates:(date).format("DD/MM/YYY"),
+          times:time,
+          dates:dayjs(date).format("DD/MM/YYY"),
           checked: false,
 
         }
       ]);
+      setIsModalOpen(false);
     }else {
       setError('provide name and time');
+      setIsModalOpen(false);
     }
   };
-
-console.log("names",name, date, time);
+  console.log(todos);
 
   return (
     <>
@@ -77,20 +79,24 @@ console.log("names",name, date, time);
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h1 className="text-lg font-bold mb-4 text-center">Add A New Todo</h1>
-        <form  onSubmit={handleSubmit}>
+        {
+          error && 
+
+        <p className="capitalize text-red-600">{error}</p>
+        }
           <div>
             <input type="text"name="name" value={name} onChange={(e)=> setName(e.target.value)} placeholder="Enter the todo name"/>
           </div>
         
         
-        <hr className="bg-slate-900 h-1 my-4 w-1/2" />
+        <hr className="bg-slate-900 h-1 my-2 w-1/2" />
 
         <div className="flex justify-content-center items-center gap-3">
           <p className="flex gap-2 items-center">
             
             <MdDateRange></MdDateRange>Date Picker
           </p>
-          <DatePicker selected={date} onChange={(date) => setDate(date)} />;
+          <DatePicker selected={date} onChange={(date) => setDate(date)} />
         </div>
         <div className="flex justify-content-center items-center gap-3">
           <p className="flex gap-2 items-center">
@@ -112,19 +118,17 @@ console.log("names",name, date, time);
           />
         </div>
         
-        <div className="text-center mt-5 border-none p-3 outline-none w-100 cursor-pointer hover:bg-green-400">
+        {/* <div className="text-center mt-5 border-none p-3 outline-none w-100 cursor-pointer hover:bg-green-400">
           <input type="submit" value="Add Todo" />
+        </div> */}
+        <div className="text-center mt-5 border-none p-3 text-black font-bold outline-none w-100 cursor-pointer hover:bg-red-400">
+          <button type="submit" value="Add Todo" onClick={(e) => handleSubmit(e)} >Add Todo</button>  
         </div>
-        </form>
-        {
-          error && 
-
-        <p>{error}</p>
-        }
+        
       </Modal>
       ;
     </>
   );
 }
 
-export default Main;
+export default Home;

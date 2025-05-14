@@ -1,6 +1,7 @@
 
 
 import Header from "./Components/Header/Header";
+import Home from "./Components/Main/Home";
 import Main from "./Components/Main/Home";
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
     <>
       <div>
         <Header/>
-        <Main/>
+        <Home />
       </div>
     </>
   );
