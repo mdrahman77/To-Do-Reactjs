@@ -8,7 +8,6 @@ import Modal from "../Modal";
 import DatePicker from "react-datepicker";
 import TimePicker from "react-time-picker";
 
-
 import "react-datepicker/dist/react-datepicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
@@ -19,11 +18,12 @@ import dayjs from "dayjs";
 
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [todos,setTodos] =useState("")
-  const [name, setName] =useState("");
+  const [todos, setTodos] = useState("");
+  const [name, setName] = useState("");
   const [date, setDate] = useState(new Date());
-  const [time, setTime] =useState("10:00");
+  const [time, setTime] = useState("10:00");
   const [error, setError] = useState("");
+  const [showUI, setShowUI] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,17 +33,16 @@ function Home() {
       setTodos([
         ...todos,
         {
-          id: Math.ceil(Math.random()*1000),
-          names:name,
-          times:time,
-          dates:dayjs(date).format("DD/MM/YYY"),
+          id: Math.ceil(Math.random() * 1000),
+          names: name,
+          times: time,
+          dates: dayjs(date).format("DD/MM/YYY"),
           checked: false,
-
-        }
+        },
       ]);
       setIsModalOpen(false);
-    }else {
-      setError('provide name and time');
+    } else {
+      setError("provide name and time");
       setIsModalOpen(false);
     }
   };
@@ -62,45 +61,74 @@ function Home() {
         >
           <IoAdd /> Make A Todo
         </button>
-        <a className="flex gap-3 items-center hover:bg-blue-400">
+        <a
+          className="flex gap-3 items-center hover:bg-blue-400"
+          onClick={(e) => {
+            e.preventDefault();
+            setShowUI("Today");
+          }}
+        >
           <IoMdToday /> Today
         </a>
-        <a className="flex gap-3 items-center">
+        <a
+          className="flex gap-3 items-center"
+          onClick={(e) => {
+            e.preventDefault();
+            setShowUI("Next 7 days");
+          }}
+        >
           <CgToday /> Next 7 Days
         </a>
-        <a className="flex gap-3 items-center">
+        <a
+          className="flex gap-3 items-center"
+          onClick={(e) => {
+            e.preventDefault();
+            setShowUI("show All");
+          }}
+        >
           <BiBarcode />
           Show All
         </a>
-        <a className="flex gap-3 items-center">
+        <a
+          className="flex gap-3 items-center"
+          onClick={(e) => {
+            e.preventDefault();
+            setShowUI("stuts");
+          }}
+        >
           <FcAcceptDatabase />
           stuts
         </a>
+        <div>
+          {showUI === "today" && <h1>Today</h1>}
+          {showUI === "next 7" && <h1>Next 7 Days</h1>}
+          {showUI === "all" && <h1>All Todos</h1>}
+          {showUI === "status" && <h1>Status</h1>}
+        </div>
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h1 className="text-lg font-bold mb-4 text-center">Add A New Todo</h1>
-        {
-          error && 
+        {error && <p className="capitalize text-red-600">{error}</p>}
+        <div>
+          <input
+            type="text"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Enter the todo name"
+          />
+        </div>
 
-        <p className="capitalize text-red-600">{error}</p>
-        }
-          <div>
-            <input type="text"name="name" value={name} onChange={(e)=> setName(e.target.value)} placeholder="Enter the todo name"/>
-          </div>
-        
-        
         <hr className="bg-slate-900 h-1 my-2 w-1/2" />
 
         <div className="flex justify-content-center items-center gap-3">
           <p className="flex gap-2 items-center">
-            
             <MdDateRange></MdDateRange>Date Picker
           </p>
           <DatePicker selected={date} onChange={(date) => setDate(date)} />
         </div>
         <div className="flex justify-content-center items-center gap-3">
           <p className="flex gap-2 items-center">
-            
             <AiOutlineFieldTime></AiOutlineFieldTime>Pick a time
           </p>
           <TimePicker
@@ -117,14 +145,19 @@ function Home() {
             className={date}
           />
         </div>
-        
+
         {/* <div className="text-center mt-5 border-none p-3 outline-none w-100 cursor-pointer hover:bg-green-400">
           <input type="submit" value="Add Todo" />
         </div> */}
         <div className="text-center mt-5 border-none p-3 text-black font-bold outline-none w-100 cursor-pointer hover:bg-red-400">
-          <button type="submit" value="Add Todo" onClick={(e) => handleSubmit(e)} >Add Todo</button>  
+          <button
+            type="submit"
+            value="Add Todo"
+            onClick={(e) => handleSubmit(e)}
+          >
+            Add Todo
+          </button>
         </div>
-        
       </Modal>
       ;
     </>
