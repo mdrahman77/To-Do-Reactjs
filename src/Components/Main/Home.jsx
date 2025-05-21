@@ -50,8 +50,9 @@ function Home() {
 
   return (
     <>
-      <div className="bg-slate-400 px-px m-px pl-12 space-y-10 py-5 text-xl w-1/6">
-        <p className="flex gap-3 items-center">
+      <div className="flex p-5 bg-slate-200">
+        <div className="bg-slate-400 px-px m-px pl-12 space-y-10 py-5 text-xl w-2/6">
+          <p className="flex gap-3 items-center">
           <FcTodoList />
           Toodos Of
         </p>
@@ -99,11 +100,30 @@ function Home() {
           <FcAcceptDatabase />
           stuts
         </a>
-        <div>
-          {showUI === "today" && <h1>Today</h1>}
-          {showUI === "next 7" && <h1>Next 7 Days</h1>}
-          {showUI === "all" && <h1>All Todos</h1>}
-          {showUI === "status" && <h1>Status</h1>}
+        </div>
+        <div className="flex flex-col justify-center items-center w-4/6">
+          <h1 className="text-2xl font-bold text-center">Todo List</h1>
+          {
+            todos.length > 0 ? (
+              <div className="grid grid-cols-3 gap-4 mt-5">
+                {todos.map((todo) => (
+                  <div
+                    key={todo.id}
+                    className="bg-green-200 p-2 rounded-lg"
+                  >
+                    <h2 className="text-lg font-bold">{todo.id}</h2>
+                    <h2 className="text-lg font-bold">{todo.names}</h2>
+                    <h2>{todo.times}</h2>
+                    <h2>{todo.dates}</h2>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="bg-green-400">
+                <h1>No todos available</h1>
+              </div>
+            )
+          }
         </div>
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
